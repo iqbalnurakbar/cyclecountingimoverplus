@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_ANALYTICS',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Analytics.v1" Alias="Analytics"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="SAP__common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_MEASURES',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="Org.OData.Measures.V1" Alias="SAP__measures"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CORE',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="Org.OData.Core.V1" Alias="SAP__core"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="SAP__capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="SAP__aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_VALIDATION',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CODELIST',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.CodeList.v1" Alias="SAP__CodeList"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_UI',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="SAP__UI"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HTML5',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.HTML5.v1" Alias="SAP__HTML5"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PDF',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.PDF.v1" Alias="SAP__PDF"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_SESSION',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Session.v1" Alias="SAP__session"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_HIERARCHY',Version='0001',SAP__Origin='FDMCLNT100')/$value">
+        <edmx:Include Namespace="com.sap.vocabularies.Hierarchy.v1" Alias="SAP__hierarchy"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="com.sap.gateway.srvd.zr_wm318_counting.v0001" Alias="SAP__self">
+            <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
+            <EntityType Name="overplusType">
+                <Key>
+                    <PropertyRef Name="request_id"/>
+                </Key>
+                <Property Name="request_id" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="counted_quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Property Name="itennr" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="description" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="batch" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="stock_category" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="special_stock_ind" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Property Name="special_stock_num" Type="Edm.String" Nullable="false" MaxLength="16"/>
+                <Property Name="storage_type" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="location" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="problem" Type="Edm.String" Nullable="false" MaxLength="8"/>
+                <Property Name="standard_cost" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="2"/>
+                <Property Name="grn_date" Type="Edm.Date"/>
+                <Property Name="sap_quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Property Name="base_unit_of_measure" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="__OperationControl" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusOperationControl"/>
+            </EntityType>
+            <ComplexType Name="overplusOperationControl">
+                <Property Name="save_and_submit" Type="Edm.Boolean" Nullable="false"/>
+            </ComplexType>
+            <ComplexType Name="ZA_WM317_OUTPUT">
+                <Property Name="error" Type="Edm.Boolean" Nullable="false"/>
+                <Property Name="error_reason" Type="Edm.String" Nullable="false" MaxLength="256"/>
+            </ComplexType>
+            <Action Name="save_and_submit" IsBound="true">
+                <Parameter Name="_it" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType" Nullable="false"/>
+                <Parameter Name="request_id" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Parameter Name="counted_unit" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="material" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Parameter Name="material_desc" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Parameter Name="batch" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Parameter Name="stock_category" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Parameter Name="special_stock_ind" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Parameter Name="special_stock_num" Type="Edm.String" Nullable="false" MaxLength="16"/>
+                <Parameter Name="sap_difference" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="group_id" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Parameter Name="total_counted" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="state" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Parameter Name="zschedule" Type="Edm.String" Nullable="false" MaxLength="1"/>
+                <Parameter Name="difference" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="request_date" Type="Edm.Date" Nullable="true"/>
+                <Parameter Name="requestor" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Parameter Name="last_modify" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Parameter Name="location" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Parameter Name="problem" Type="Edm.String" Nullable="false" MaxLength="8"/>
+                <Parameter Name="remark" Type="Edm.String" Nullable="false" MaxLength="60"/>
+                <Parameter Name="cogi" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="order_type" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Parameter Name="site" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Parameter Name="sap_quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="difference_value" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Parameter Name="part_type" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Parameter Name="fulfilment_date" Type="Edm.Date" Nullable="true"/>
+                <Parameter Name="deadline" Type="Edm.Date" Nullable="true"/>
+                <Parameter Name="base_unit_of_measure" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM317_OUTPUT" Nullable="false"/>
+            </Action>
+            <EntityContainer Name="Container">
+                <EntitySet Name="overplus" EntityType="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType"/>
+            </EntityContainer>
+            <Annotations Target="SAP__self.overplusType/counted_quantity">
+                <Annotation Term="SAP__measures.Unit" Path="base_unit_of_measure"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusType/standard_cost">
+                <Annotation Term="SAP__measures.Unit" Path="base_unit_of_measure"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusType/sap_quantity">
+                <Annotation Term="SAP__measures.Unit" Path="base_unit_of_measure"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusType/base_unit_of_measure">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="基本计量单位"/>
+                <Annotation Term="SAP__common.Heading" String="计"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusType/__OperationControl">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+            </Annotations>
+            <Annotations Target="SAP__self.save_and_submit(SAP__self.overplusType)">
+                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/save_and_submit"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusType">
+                <Annotation Term="SAP__common.Label" String="Cycle Counting - IM - Overplus"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/overplus">
+                <Annotation Term="SAP__capabilities.SearchRestrictions">
+                    <Record>
+                        <PropertyValue Property="Searchable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonFilterableProperties">
+                            <Collection>
+                                <PropertyPath>__OperationControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SortRestrictions">
+                    <Record>
+                        <PropertyValue Property="NonSortableProperties">
+                            <Collection>
+                                <PropertyPath>__OperationControl</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.ReadRestrictions">
+                    <Record>
+                        <PropertyValue Property="Readable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="QueryOptions">
+                            <Record>
+                                <PropertyValue Property="SelectSupported" Bool="true"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__core.OptimisticConcurrency">
+                    <Collection/>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="SAP__self.Container">
+                <Annotation Term="SAP__CodeList.UnitsOfMeasure">
+                    <Record>
+                        <PropertyValue Property="Url" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="CollectionPath" String="UnitsOfMeasure"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__aggregation.ApplySupported">
+                    <Record>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Rollup" EnumMember="SAP__aggregation.RollupType/None"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
+                <Annotation Term="SAP__capabilities.FilterFunctions">
+                    <Collection>
+                        <String>eq</String>
+                        <String>ne</String>
+                        <String>gt</String>
+                        <String>ge</String>
+                        <String>lt</String>
+                        <String>le</String>
+                        <String>and</String>
+                        <String>or</String>
+                        <String>contains</String>
+                        <String>startswith</String>
+                        <String>endswith</String>
+                        <String>any</String>
+                        <String>all</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.SupportedFormats">
+                    <Collection>
+                        <String>application/json</String>
+                        <String>application/pdf</String>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="SAP__PDF.Features">
+                    <Record>
+                        <PropertyValue Property="DocumentDescriptionReference" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="DocumentDescriptionCollection" String="MyDocumentDescriptions"/>
+                        <PropertyValue Property="ArchiveFormat" Bool="true"/>
+                        <PropertyValue Property="Border" Bool="true"/>
+                        <PropertyValue Property="CoverPage" Bool="true"/>
+                        <PropertyValue Property="FitToPage" Bool="true"/>
+                        <PropertyValue Property="FontName" Bool="true"/>
+                        <PropertyValue Property="FontSize" Bool="true"/>
+                        <PropertyValue Property="Margin" Bool="true"/>
+                        <PropertyValue Property="Padding" Bool="true"/>
+                        <PropertyValue Property="Signature" Bool="true"/>
+                        <PropertyValue Property="HeaderFooter" Bool="true"/>
+                        <PropertyValue Property="ResultSizeDefault" Int="20000"/>
+                        <PropertyValue Property="ResultSizeMaximum" Int="20000"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.KeyAsSegmentSupported"/>
+                <Annotation Term="SAP__capabilities.AsynchronousRequestsSupported"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusType/__OperationControl/save_and_submit">
+                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
+                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
+            </Annotations>
+            <Annotations Target="SAP__self.overplusOperationControl/save_and_submit">
+                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
+                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZA_WM317_OUTPUT/error">
+                <Annotation Term="SAP__common.Label" String="布尔值"/>
+                <Annotation Term="SAP__common.QuickInfo" String="布尔值：真/假"/>
+            </Annotations>
+            <Annotations Target="SAP__self.save_and_submit(SAP__self.overplusType)/remark">
+                <Annotation Term="SAP__common.Label" String="Long Text"/>
+            </Annotations>
+            <Annotations Target="SAP__self.save_and_submit(SAP__self.overplusType)/base_unit_of_measure">
+                <Annotation Term="SAP__common.Label" String="基本计量单位"/>
+                <Annotation Term="SAP__common.Heading" String="计"/>
+            </Annotations>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
