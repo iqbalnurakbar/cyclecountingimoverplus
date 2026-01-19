@@ -83,10 +83,10 @@ sap.ui.define(
         description: oView.byId("idDescriptionInput").getValue(),
         batch: oView.byId("idBatchInput").getValue(),
         stock_category: oView.byId("idStockCategoryInput").getValue(),
-        special_stock_ind: oView
-          .byId("idSpecialStockIndicatorInput")
-          .getValue() || "",
-        special_stock_num: oView.byId("idSpecialStockNumberInput").getValue() || "",
+        special_stock_ind:
+          oView.byId("idSpecialStockIndicatorInput").getValue() || "",
+        special_stock_num:
+          oView.byId("idSpecialStockNumberInput").getValue() || "",
         storage_type: oView.byId("idStorageTypeInput").getValue() || "",
         location: oView.byId("idLocationInput").getValue() || "",
         standard_cost: oView.byId("idStandardCostInput").getValue() || "",
@@ -193,5 +193,5 @@ sap.ui.define(
         saveAndSubmit(this.getView());
       },
     });
-  }
+  },
 );
