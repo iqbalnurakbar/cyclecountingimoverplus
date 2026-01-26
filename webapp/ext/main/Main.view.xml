@@ -192,7 +192,7 @@
                             </f:FormElement>
                             <f:FormElement
                                 id="idMaterialTypeFormElement"
-                                label="{i18n>MaterialType}"
+                                label="{i18n>PartType}"
                                 class="sapUiTinyMarginEnd"
                             >
                                 <f:fields>
@@ -215,11 +215,17 @@
                                         class="sapUiTinyMarginEnd"
                                     >
                                         <Button
+                                            id="idSaveWithoutSubmitButton"
+                                            icon="sap-icon://drill-down"
+                                            press="onButtonSaveWithoutSubmitPress"
+                                            class="sapUiSmallMargin"
+                                        />
+                                        <Button
                                             id="idSaveButton"
                                             text="Save"
                                             type="Emphasized"
                                             press="onSaveButtonPress"
-                                            class="sapUiMediumMarginTop"
+                                            class="sapUiSmallMargin"
                                         />
                                     </HBox>
                                 </f:fields>

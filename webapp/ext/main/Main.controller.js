@@ -95,6 +95,7 @@ sap.ui.define(
         base_unit_of_measure: globalData.base_unit_of_measure,
       };
 
+      console.log("Save and Submit Params:", params);
       setActionParameters(oAction, params);
 
       oAction
@@ -171,6 +172,40 @@ sap.ui.define(
         });
     }
 
+    // --- SAP GRN Date Update ---
+    function updateGRNDate(oView) {
+      const oModel = oView.getModel();
+      const linkContext = `/overplus('${globalData.request_id}')/com.sap.gateway.srvd.zr_wm318_counting.v0001.grn_date_side_effect(...)`;
+      const oAction = oModel.bindContext(linkContext, null);
+
+      const params = {
+        grn_date:
+          oView
+            .byId("idGRNDatePicker")
+            .getDateValue()
+            ?.toISOString()
+            .slice(0, 10) || null,
+        batch_managed: oView.byId("idBatchInput").getEditable(),
+        material: oView.byId("idItennrInput").getValue(),
+        batch: oView.byId("idBatchInput").getValue(),
+        plant: globalData.plant,
+      };
+
+      setActionParameters(oAction, params);
+
+      oAction
+        .execute()
+        .then(() => {
+          const oResult = oAction.getBoundContext().getObject();
+          setInputValues(oView, {
+            idGRNDatePicker: oResult.grn_date,
+          });
+        })
+        .catch((err) => {
+          console.error("Action failed:", err);
+        });
+    }
+
     // --- Controller Definition ---
     return PageController.extend("cyclecountingimoverplus.ext.main.Main", {
       onInit: function () {
@@ -179,11 +214,11 @@ sap.ui.define(
 
       onAfterRendering: function () {
         preloadData(this.getView());
-        console.log(globalData);
       },
 
       onInputChange: function () {
         updateSAPQuantity(this.getView());
+        updateGRNDate(this.getView());
       },
 
       onSaveButtonPress: function () {
@@ -191,6 +226,67 @@ sap.ui.define(
           MessageBox.error("Counted Unit is mandatory!");
         }
         saveAndSubmit(this.getView());
+      },
+
+      onButtonSaveWithoutSubmitPress: function () {
+        const oModel = this.getView().getModel();
+        const linkContext = `/overplus('${globalData.request_id}')/com.sap.gateway.srvd.zr_wm318_counting.v0001.save_without_submit(...)`;
+        const oAction = oModel.bindContext(linkContext, null);
+
+        const params = {
+          request_id: globalData.request_id,
+          counted_quantity: this.getView()
+            .byId("idCountedQuantityInput")
+            .getValue(),
+          itennr: this.getView().byId("idItennrInput").getValue(),
+          description: this.getView().byId("idDescriptionInput").getValue(),
+          batch: this.getView().byId("idBatchInput").getValue(),
+          stock_category: this.getView()
+            .byId("idStockCategoryInput")
+            .getValue(),
+          special_stock_ind:
+            this.getView().byId("idSpecialStockIndicatorInput").getValue() ||
+            "",
+          special_stock_num:
+            this.getView().byId("idSpecialStockNumberInput").getValue() || "",
+          storage_type:
+            this.getView().byId("idStorageTypeInput").getValue() || "",
+          location: this.getView().byId("idLocationInput").getValue() || "",
+          standard_cost:
+            this.getView().byId("idStandardCostInput").getValue() || "",
+          grn_date: getTodayISO(),
+          sap_quantity:
+            this.getView().byId("idSAPQuantityInput").getValue() || "",
+          base_unit_of_measure: globalData.base_unit_of_measure,
+        };
+
+        setActionParameters(oAction, params);
+
+        oAction
+          .execute()
+          .then(() => {
+            const oResult = oAction.getBoundContext().getObject();
+
+            if (oResult.error === true) {
+              MessageBox.error(oResult.error_reason);
+            } else {
+              MessageToast.show("Save without Submitting...");
+
+              // Clear counted quantity, batch, special stock indicator, special stock number
+              setInputValues(this.getView(), {
+                idCountedQuantityInput: "",
+                idBatchInput: "",
+                idSpecialStockIndicatorInput: "",
+                idSpecialStockNumberInput: "",
+              });
+
+              // Set location to non-editable
+              this.getView().byId("idLocationInput").setEditable(false);
+            }
+          })
+          .catch((err) => {
+            console.error("Action failed:", err);
+          });
       },
     });
   },
