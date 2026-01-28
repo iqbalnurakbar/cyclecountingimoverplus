@@ -1,6 +1,12 @@
 sap.ui.define(
-  ["sap/fe/core/PageController", "sap/m/MessageBox", "sap/m/MessageToast"],
-  function (PageController, MessageBox, MessageToast) {
+  [
+    "sap/fe/core/PageController",
+    "sap/m/MessageBox",
+    "sap/m/MessageToast",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+  ],
+  function (PageController, MessageBox, MessageToast, Filter, FilterOperator) {
     "use strict";
 
     // --- Global Data ---
@@ -93,6 +99,7 @@ sap.ui.define(
         grn_date: getTodayISO(),
         sap_quantity: oView.byId("idSAPQuantityInput").getValue() || "",
         base_unit_of_measure: globalData.base_unit_of_measure,
+        problem: oView.byId("idProblemVhComboBox").getSelectedKey() || "",
       };
 
       console.log("Save and Submit Params:", params);
@@ -166,6 +173,7 @@ sap.ui.define(
             .setEditable(!oResult.stock_category_needed);
 
           updateSAPQuantity(oView);
+          filterProblemByPlant(oView, globalData.plant);
         })
         .catch((err) => {
           console.error("Action failed:", err);
@@ -204,6 +212,19 @@ sap.ui.define(
         .catch((err) => {
           console.error("Action failed:", err);
         });
+    }
+
+    function filterProblemByPlant(oView, sPlant) {
+      var oComboBox = oView.byId("idProblemVhComboBox");
+      var oBinding = oComboBox.getBinding("items");
+
+      if (oBinding) {
+        var aFilters = [];
+        if (sPlant) {
+          aFilters.push(new Filter("Werks", FilterOperator.EQ, sPlant));
+        }
+        oBinding.filter(aFilters);
+      }
     }
 
     // --- Controller Definition ---
@@ -258,6 +279,8 @@ sap.ui.define(
           sap_quantity:
             this.getView().byId("idSAPQuantityInput").getValue() || "",
           base_unit_of_measure: globalData.base_unit_of_measure,
+          problem:
+            this.getView().byId("idProblemVhComboBox").getSelectedKey() || "",
         };
 
         setActionParameters(oAction, params);
@@ -278,6 +301,7 @@ sap.ui.define(
                 idBatchInput: "",
                 idSpecialStockIndicatorInput: "",
                 idSpecialStockNumberInput: "",
+                idProblemVhComboBox: ""
               });
 
               // Set location to non-editable

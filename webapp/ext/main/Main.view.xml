@@ -2,6 +2,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
     controllerName="cyclecountingimoverplus.ext.main.Main"
 >
     <Page
@@ -273,6 +274,27 @@
                                         displayFormat="yyyy/MM/dd"
                                         width="100%"
                                     />
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement
+                                id="idProblemFormElement"
+                                label="{i18n>Problem}"
+                                class="sapUiTinyMarginEnd"
+                            >
+                                <f:fields>
+                                    <ComboBox
+                                        id="idProblemVhComboBox"
+                                        width="100%"
+                                        items="{/problem_vh}"
+                                        showSecondaryValues="true"
+                                    >
+                                        <core:ListItem
+                                            id="idZrsnCodeListItem"
+                                            key="{ZrsnCode}"
+                                            text="{ZrsnCode}"
+                                            additionalText="{= ${ZdefTy} + ' - ' + ${ZrsnDesc} }"
+                                        />
+                                    </ComboBox>
                                 </f:fields>
                             </f:FormElement>
                         </f:formElements>
