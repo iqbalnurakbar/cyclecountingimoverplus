@@ -85,10 +85,6 @@
             </EntityType>
             <ComplexType Name="overplusOperationControl">
                 <Property Name="grn_date_side_effect" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="preload_data" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="sap_qty_side_effect" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="save_and_submit" Type="Edm.Boolean" Nullable="false"/>
-                <Property Name="save_without_submit" Type="Edm.Boolean" Nullable="false"/>
             </ComplexType>
             <ComplexType Name="ZA_WM318_GRN_DATE">
                 <Property Name="batch" Type="Edm.String" Nullable="false" MaxLength="10"/>
@@ -102,6 +98,7 @@
                 <Property Name="batch" Type="Edm.String" Nullable="false" MaxLength="10"/>
                 <Property Name="batch_needed" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="cogi" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Property Name="cogi_qty_needed" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="counted_unit" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
                 <Property Name="cycle_wise" Type="Edm.String" Nullable="false" MaxLength="1"/>
                 <Property Name="deadline" Type="Edm.Date"/>
@@ -160,6 +157,7 @@
             <ComplexType Name="ZA_WM317_OUTPUT">
                 <Property Name="error" Type="Edm.Boolean" Nullable="false"/>
                 <Property Name="error_reason" Type="Edm.String" Nullable="false" MaxLength="256"/>
+                <Property Name="request_id" Type="Edm.String" Nullable="false" MaxLength="20"/>
             </ComplexType>
             <ComplexType Name="SAP__Message">
                 <Property Name="code" Type="Edm.String" Nullable="false"/>
@@ -170,8 +168,16 @@
                 <Property Name="numericSeverity" Type="Edm.Byte" Nullable="false"/>
                 <Property Name="longtextUrl" Type="Edm.String"/>
             </ComplexType>
+            <Action Name="check_batch" IsBound="true">
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType)" Nullable="false"/>
+                <Parameter Name="material" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Parameter Name="material_desc" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Parameter Name="plant" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Parameter Name="part_type" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM317_COUNTING_PRELOAD" Nullable="false"/>
+            </Action>
             <Action Name="sap_qty_side_effect" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType" Nullable="false"/>
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType)" Nullable="false"/>
                 <Parameter Name="special_stock_indicator" Type="Edm.String" Nullable="false" MaxLength="1"/>
                 <Parameter Name="stock_category" Type="Edm.String" Nullable="false" MaxLength="1"/>
                 <Parameter Name="batch_managed" Type="Edm.Boolean" Nullable="false"/>
@@ -183,7 +189,7 @@
                 <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM317_COUNTING_PRELOAD" Nullable="false"/>
             </Action>
             <Action Name="save_and_submit" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType" Nullable="false"/>
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType)" Nullable="false"/>
                 <Parameter Name="request_id" Type="Edm.String" Nullable="false" MaxLength="20"/>
                 <Parameter Name="counted_quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
                 <Parameter Name="itennr" Type="Edm.String" Nullable="false" MaxLength="40"/>
@@ -202,7 +208,8 @@
                 <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM317_OUTPUT" Nullable="false"/>
             </Action>
             <Action Name="preload_data" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType" Nullable="false"/>
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType)" Nullable="false"/>
+                <Parameter Name="request_id" Type="Edm.String" Nullable="false" MaxLength="20"/>
                 <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM318_COUNTING_PRELOAD" Nullable="false"/>
             </Action>
             <Action Name="grn_date_side_effect" IsBound="true">
@@ -215,7 +222,7 @@
                 <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM318_GRN_DATE" Nullable="false"/>
             </Action>
             <Action Name="save_without_submit" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType" Nullable="false"/>
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType)" Nullable="false"/>
                 <Parameter Name="request_id" Type="Edm.String" Nullable="false" MaxLength="20"/>
                 <Parameter Name="counted_quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
                 <Parameter Name="itennr" Type="Edm.String" Nullable="false" MaxLength="40"/>
@@ -289,20 +296,8 @@
                 <Annotation Term="SAP__UI.HiddenFilter"/>
                 <Annotation Term="SAP__UI.Hidden"/>
             </Annotations>
-            <Annotations Target="SAP__self.sap_qty_side_effect(SAP__self.overplusType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/sap_qty_side_effect"/>
-            </Annotations>
-            <Annotations Target="SAP__self.save_and_submit(SAP__self.overplusType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/save_and_submit"/>
-            </Annotations>
-            <Annotations Target="SAP__self.preload_data(SAP__self.overplusType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/preload_data"/>
-            </Annotations>
             <Annotations Target="SAP__self.grn_date_side_effect(SAP__self.overplusType)">
                 <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/grn_date_side_effect"/>
-            </Annotations>
-            <Annotations Target="SAP__self.save_without_submit(SAP__self.overplusType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/save_without_submit"/>
             </Annotations>
             <Annotations Target="SAP__self.overplusType">
                 <Annotation Term="SAP__common.Label" String="Cycle Counting - IM - Overplus"/>
@@ -478,47 +473,7 @@
                 <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
             </Annotations>
-            <Annotations Target="SAP__self.overplusType/__OperationControl/preload_data">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusType/__OperationControl/sap_qty_side_effect">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusType/__OperationControl/save_and_submit">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusType/__OperationControl/save_without_submit">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
             <Annotations Target="SAP__self.overplusOperationControl/grn_date_side_effect">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusOperationControl/preload_data">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusOperationControl/sap_qty_side_effect">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusOperationControl/save_and_submit">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusOperationControl/save_without_submit">
                 <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
                 <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
@@ -543,6 +498,10 @@
                 <Annotation Term="SAP__common.Heading" String="计"/>
             </Annotations>
             <Annotations Target="SAP__self.ZA_WM317_COUNTING_PRELOAD/batch_needed">
+                <Annotation Term="SAP__common.Label" String="布尔值"/>
+                <Annotation Term="SAP__common.QuickInfo" String="布尔值：真/假"/>
+            </Annotations>
+            <Annotations Target="SAP__self.ZA_WM317_COUNTING_PRELOAD/cogi_qty_needed">
                 <Annotation Term="SAP__common.Label" String="布尔值"/>
                 <Annotation Term="SAP__common.QuickInfo" String="布尔值：真/假"/>
             </Annotations>
@@ -572,21 +531,21 @@
                 <Annotation Term="SAP__common.Label" String="布尔值"/>
                 <Annotation Term="SAP__common.QuickInfo" String="布尔值：真/假"/>
             </Annotations>
-            <Annotations Target="SAP__self.sap_qty_side_effect(SAP__self.overplusType)/batch_managed">
+            <Annotations Target="SAP__self.sap_qty_side_effect(Collection(SAP__self.overplusType))/batch_managed">
                 <Annotation Term="SAP__common.Label" String="布尔值"/>
                 <Annotation Term="SAP__common.QuickInfo" String="布尔值：真/假"/>
             </Annotations>
-            <Annotations Target="SAP__self.sap_qty_side_effect(SAP__self.overplusType)/material">
+            <Annotations Target="SAP__self.sap_qty_side_effect(Collection(SAP__self.overplusType))/material">
                 <Annotation Term="SAP__common.Label" String="物料"/>
                 <Annotation Term="SAP__common.QuickInfo" String="物料编号"/>
             </Annotations>
-            <Annotations Target="SAP__self.sap_qty_side_effect(SAP__self.overplusType)/plant">
+            <Annotations Target="SAP__self.sap_qty_side_effect(Collection(SAP__self.overplusType))/plant">
                 <Annotation Term="SAP__common.Label" String="工厂"/>
             </Annotations>
-            <Annotations Target="SAP__self.save_and_submit(SAP__self.overplusType)/problem">
+            <Annotations Target="SAP__self.save_and_submit(Collection(SAP__self.overplusType))/problem">
                 <Annotation Term="SAP__common.Label" String="Reason Code"/>
             </Annotations>
-            <Annotations Target="SAP__self.save_and_submit(SAP__self.overplusType)/base_unit_of_measure">
+            <Annotations Target="SAP__self.save_and_submit(Collection(SAP__self.overplusType))/base_unit_of_measure">
                 <Annotation Term="SAP__common.Label" String="基本计量单位"/>
                 <Annotation Term="SAP__common.Heading" String="计"/>
             </Annotations>
@@ -605,10 +564,10 @@
                 <Annotation Term="SAP__common.Label" String="批次"/>
                 <Annotation Term="SAP__common.QuickInfo" String="批次编号"/>
             </Annotations>
-            <Annotations Target="SAP__self.save_without_submit(SAP__self.overplusType)/problem">
+            <Annotations Target="SAP__self.save_without_submit(Collection(SAP__self.overplusType))/problem">
                 <Annotation Term="SAP__common.Label" String="Reason Code"/>
             </Annotations>
-            <Annotations Target="SAP__self.save_without_submit(SAP__self.overplusType)/base_unit_of_measure">
+            <Annotations Target="SAP__self.save_without_submit(Collection(SAP__self.overplusType))/base_unit_of_measure">
                 <Annotation Term="SAP__common.Label" String="基本计量单位"/>
                 <Annotation Term="SAP__common.Heading" String="计"/>
             </Annotations>

@@ -58,7 +58,7 @@
                                         id="idItennrInput"
                                         maxLength="40"
                                         required="true"
-                                        change="onInputChange"
+                                        change="onInputMaterialChange"
                                         width="100%"
                                     />
                                 </f:fields>
