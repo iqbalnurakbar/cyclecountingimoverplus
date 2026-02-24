@@ -67,7 +67,6 @@
                 <Property Name="grn_date" Type="Edm.Date"/>
                 <Property Name="sap_quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
                 <Property Name="base_unit_of_measure" Type="Edm.String" Nullable="false" MaxLength="3"/>
-                <Property Name="__OperationControl" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusOperationControl"/>
                 <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.SAP__Message)" Nullable="false"/>
             </EntityType>
             <EntityType Name="problem_vhType">
@@ -83,9 +82,6 @@
                 <Property Name="ZrsnCode" Type="Edm.String" Nullable="false" MaxLength="8"/>
                 <Property Name="ZrsnDesc" Type="Edm.String" Nullable="false" MaxLength="40"/>
             </EntityType>
-            <ComplexType Name="overplusOperationControl">
-                <Property Name="grn_date_side_effect" Type="Edm.Boolean" Nullable="false"/>
-            </ComplexType>
             <ComplexType Name="ZA_WM318_GRN_DATE">
                 <Property Name="batch" Type="Edm.String" Nullable="false" MaxLength="10"/>
                 <Property Name="batch_managed" Type="Edm.Boolean" Nullable="false"/>
@@ -213,7 +209,7 @@
                 <ReturnType Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.ZA_WM318_COUNTING_PRELOAD" Nullable="false"/>
             </Action>
             <Action Name="grn_date_side_effect" IsBound="true">
-                <Parameter Name="_it" Type="com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType" Nullable="false"/>
+                <Parameter Name="_it" Type="Collection(com.sap.gateway.srvd.zr_wm318_counting.v0001.overplusType)" Nullable="false"/>
                 <Parameter Name="grn_date" Type="Edm.Date" Nullable="true"/>
                 <Parameter Name="batch_managed" Type="Edm.Boolean" Nullable="false"/>
                 <Parameter Name="material" Type="Edm.String" Nullable="false" MaxLength="40"/>
@@ -291,14 +287,6 @@
                 <Annotation Term="SAP__common.Label" String="基本计量单位"/>
                 <Annotation Term="SAP__common.Heading" String="计"/>
             </Annotations>
-            <Annotations Target="SAP__self.overplusType/__OperationControl">
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__UI.HiddenFilter"/>
-                <Annotation Term="SAP__UI.Hidden"/>
-            </Annotations>
-            <Annotations Target="SAP__self.grn_date_side_effect(SAP__self.overplusType)">
-                <Annotation Term="SAP__core.OperationAvailable" Path="_it/__OperationControl/grn_date_side_effect"/>
-            </Annotations>
             <Annotations Target="SAP__self.overplusType">
                 <Annotation Term="SAP__common.Label" String="Cycle Counting - IM - Overplus"/>
                 <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
@@ -307,24 +295,6 @@
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
                     <Record>
                         <PropertyValue Property="Searchable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.FilterRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonFilterableProperties">
-                            <Collection>
-                                <PropertyPath>__OperationControl</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.SortRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonSortableProperties">
-                            <Collection>
-                                <PropertyPath>__OperationControl</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
                     </Record>
                 </Annotation>
                 <Annotation Term="SAP__capabilities.InsertRestrictions">
@@ -349,6 +319,26 @@
                 </Annotation>
                 <Annotation Term="SAP__core.OptimisticConcurrency">
                     <Collection/>
+                </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="counted_quantity"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="standard_cost"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="sap_quantity"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
                 </Annotation>
             </Annotations>
             <Annotations Target="SAP__self.Container">
@@ -468,16 +458,6 @@
                     <Collection/>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.overplusType/__OperationControl/grn_date_side_effect">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
-            <Annotations Target="SAP__self.overplusOperationControl/grn_date_side_effect">
-                <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
-                <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
-            </Annotations>
             <Annotations Target="SAP__self.ZA_WM318_GRN_DATE/batch">
                 <Annotation Term="SAP__common.Label" String="批次"/>
                 <Annotation Term="SAP__common.QuickInfo" String="批次编号"/>
@@ -549,18 +529,18 @@
                 <Annotation Term="SAP__common.Label" String="基本计量单位"/>
                 <Annotation Term="SAP__common.Heading" String="计"/>
             </Annotations>
-            <Annotations Target="SAP__self.grn_date_side_effect(SAP__self.overplusType)/batch_managed">
+            <Annotations Target="SAP__self.grn_date_side_effect(Collection(SAP__self.overplusType))/batch_managed">
                 <Annotation Term="SAP__common.Label" String="布尔值"/>
                 <Annotation Term="SAP__common.QuickInfo" String="布尔值：真/假"/>
             </Annotations>
-            <Annotations Target="SAP__self.grn_date_side_effect(SAP__self.overplusType)/material">
+            <Annotations Target="SAP__self.grn_date_side_effect(Collection(SAP__self.overplusType))/material">
                 <Annotation Term="SAP__common.Label" String="物料"/>
                 <Annotation Term="SAP__common.QuickInfo" String="物料编号"/>
             </Annotations>
-            <Annotations Target="SAP__self.grn_date_side_effect(SAP__self.overplusType)/plant">
+            <Annotations Target="SAP__self.grn_date_side_effect(Collection(SAP__self.overplusType))/plant">
                 <Annotation Term="SAP__common.Label" String="工厂"/>
             </Annotations>
-            <Annotations Target="SAP__self.grn_date_side_effect(SAP__self.overplusType)/batch">
+            <Annotations Target="SAP__self.grn_date_side_effect(Collection(SAP__self.overplusType))/batch">
                 <Annotation Term="SAP__common.Label" String="批次"/>
                 <Annotation Term="SAP__common.QuickInfo" String="批次编号"/>
             </Annotations>

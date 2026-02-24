@@ -177,6 +177,7 @@ sap.ui.define(
               .setEditable(!oResult.stock_category_needed);
 
             updateSAPQuantity(oView);
+            updateGRNDate(oView);
             filterProblemByPlant(oView, globalData.plant);
 
             resolve(oResult);
@@ -245,6 +246,8 @@ sap.ui.define(
 
       onAfterRendering: async function () {
         await preloadData(this.getView());
+
+        this._checkBatchNeeded();
 
         const bIsDirectAccess = this._isDirectAccess();
         if (bIsDirectAccess) {
