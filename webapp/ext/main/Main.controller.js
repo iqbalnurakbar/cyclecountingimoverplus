@@ -67,7 +67,7 @@ sap.ui.define(
         .execute()
         .then(() => {
           const oResult = oAction.getBoundContext().getObject();
-          console.log("SAP Quantity Side Effect Result:", oResult);
+          
           setInputValues(oView, {
             idSAPQuantityInput: oResult.sap_quantity,
           });
@@ -78,7 +78,7 @@ sap.ui.define(
     }
 
     // --- Save and Submit Action ---
-    function saveAndSubmit(oView) {
+    function saveAndSubmit(oView, bIsDirectAccess) {
       const oModel = oView.getModel();
       const linkContext = `/overplus/com.sap.gateway.srvd.zr_wm318_counting.v0001.save_and_submit(...)`;
       const oAction = oModel.bindContext(linkContext, null);
@@ -114,9 +114,27 @@ sap.ui.define(
           } else {
             MessageToast.show("Save and Submitting...");
 
-            // Go back to cockpit
-            var Navigation = sap.ushell.Container.getService("Navigation");
-            Navigation.historyBack(2);
+            // Go back to cockpit or shell home, depending on how the app is accessed
+            // If direct access, go to shell home. If accessed via other app, go back to cockpit.
+            const oCrossAppNavigator = sap.ushell.Container.getService(
+              "CrossApplicationNavigation",
+            );
+            if (bIsDirectAccess) {
+              //
+              oCrossAppNavigator.toExternal({
+                target: {
+                  shellHash: "#", // "#" = Launchpad Home
+                },
+              });
+            } else {
+              oCrossAppNavigator.toExternal({
+                target: {
+                  semanticObject: "ZWM101COCKPIT",
+                  action: "display",
+                }
+              });
+            } 
+
           }
         })
         .catch((err) => {
@@ -139,7 +157,6 @@ sap.ui.define(
           .execute()
           .then(() => {
             const oResult = oAction.getBoundContext().getObject();
-            console.log("Preload Data Result:", oResult);
             globalData.plant = oResult.plant;
             globalData.base_unit_of_measure = oResult.base_unit_of_measure;
 
@@ -214,11 +231,9 @@ sap.ui.define(
         .execute()
         .then(() => {
           const oResult = oAction.getBoundContext().getObject();
-          console.log("GRN Date Side Effect Result:", oResult);
           setInputValues(oView, {
             idGRNDatePicker: oResult.grn_date,
           });
-          
         })
         .catch((err) => {
           console.error("Action failed:", err);
@@ -261,10 +276,11 @@ sap.ui.define(
       },
 
       onSaveButtonPress: function () {
+        const bIsDirectAccess = this._isDirectAccess();
         if (this.getView().byId("idCountedQuantityInput").getValue() == null) {
           MessageBox.error("Counted Unit is mandatory!");
         }
-        saveAndSubmit(this.getView());
+        saveAndSubmit(this.getView(), bIsDirectAccess);
       },
 
       onButtonSaveWithoutSubmitPress: function () {
@@ -323,6 +339,9 @@ sap.ui.define(
 
               // Set location to non-editable
               this.getView().byId("idLocationInput").setEditable(false);
+
+              // Set material to non-editable
+              this.getView().byId("idItennrInput").setEditable(false);
             }
           })
           .catch((err) => {
