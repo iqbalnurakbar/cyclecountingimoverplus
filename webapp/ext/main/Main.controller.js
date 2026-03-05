@@ -107,7 +107,7 @@ sap.ui.define(
 
       oAction
         .execute()
-        .then(() => {
+        .then(async () => {
           const oResult = oAction.getBoundContext().getObject();
           if (oResult.error === true) {
             MessageBox.error(oResult.error_reason);
@@ -116,18 +116,18 @@ sap.ui.define(
 
             // Go back to cockpit or shell home, depending on how the app is accessed
             // If direct access, go to shell home. If accessed via other app, go back to cockpit.
-            const oCrossAppNavigator = sap.ushell.Container.getService(
-              "CrossApplicationNavigation",
+            const oCrossAppNavigator = await sap.ushell.Container.getServiceAsync(
+              "Navigation",
             );
             if (bIsDirectAccess) {
               //
-              oCrossAppNavigator.toExternal({
+              oCrossAppNavigator.navigate({
                 target: {
                   shellHash: "#", // "#" = Launchpad Home
                 },
               });
             } else {
-              oCrossAppNavigator.toExternal({
+              oCrossAppNavigator.navigate({
                 target: {
                   semanticObject: "ZWM101COCKPIT",
                   action: "display",
