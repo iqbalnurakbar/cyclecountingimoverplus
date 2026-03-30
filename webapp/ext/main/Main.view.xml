@@ -64,20 +64,6 @@
                                 </f:fields>
                             </f:FormElement>
                             <f:FormElement
-                                id="idHandingUnitFormElement"
-                                label="{i18n>HandingUnit}"
-                                class="sapUiTinyMarginEnd"
-                            >
-                                <f:fields>
-                                    <Input
-                                        id="idHandingUnitInput"
-                                        maxLength="40"
-                                        editable="false"
-                                        width="100%"
-                                    />
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement
                                 id="idCountedQuantityFormElement"
                                 label="{i18n>CountedQuantity}"
                                 class="sapUiTinyMarginEnd"
@@ -119,7 +105,6 @@
                             </f:FormElement>
                         </f:formElements>
                     </f:FormContainer>
-
                     <!-- Middle Column -->
                     <f:FormContainer id="idMiddleColumnFormContainer">
                         <f:formElements>
@@ -192,19 +177,6 @@
                                 </f:fields>
                             </f:FormElement>
                             <f:FormElement
-                                id="idMaterialTypeFormElement"
-                                label="{i18n>PartType}"
-                                class="sapUiTinyMarginEnd"
-                            >
-                                <f:fields>
-                                    <Input
-                                        id="idMaterialTypeInput"
-                                        editable="false"
-                                        width="100%"
-                                    />
-                                </f:fields>
-                            </f:FormElement>
-                            <f:FormElement
                                 id="idButtonFormElement"
                                 class="sapUiTinyMarginEnd"
                             >
@@ -233,10 +205,22 @@
                             </f:FormElement>
                         </f:formElements>
                     </f:FormContainer>
-
                     <!-- Right Column -->
                     <f:FormContainer id="idRightColumnFormContainer">
                         <f:formElements>
+                            <f:FormElement
+                                id="idMaterialTypeFormElement"
+                                label="{i18n>PartType}"
+                                class="sapUiTinyMarginEnd"
+                            >
+                                <f:fields>
+                                    <Input
+                                        id="idMaterialTypeInput"
+                                        editable="false"
+                                        width="100%"
+                                    />
+                                </f:fields>
+                            </f:FormElement>
                             <f:FormElement
                                 id="idStandardCostFormElement"
                                 label="{i18n>StandardCost}"
