@@ -67,7 +67,7 @@ sap.ui.define(
         .execute()
         .then(() => {
           const oResult = oAction.getBoundContext().getObject();
-          
+
           setInputValues(oView, {
             idSAPQuantityInput: oResult.sap_quantity,
           });
@@ -116,9 +116,8 @@ sap.ui.define(
 
             // Go back to cockpit or shell home, depending on how the app is accessed
             // If direct access, go to shell home. If accessed via other app, go back to cockpit.
-            const oCrossAppNavigator = await sap.ushell.Container.getServiceAsync(
-              "Navigation",
-            );
+            const oCrossAppNavigator =
+              await sap.ushell.Container.getServiceAsync("Navigation");
             if (bIsDirectAccess) {
               //
               oCrossAppNavigator.navigate({
@@ -131,10 +130,9 @@ sap.ui.define(
                 target: {
                   semanticObject: "ZWM101COCKPIT",
                   action: "display",
-                }
+                },
               });
-            } 
-
+            }
           }
         })
         .catch((err) => {
@@ -143,68 +141,69 @@ sap.ui.define(
     }
 
     // --- Preload Data ---
-    function preloadData(oView) {
-      return new Promise((resolve, reject) => {
-        const oModel = oView.getModel();
-        globalData.request_id = getRequestId();
-        const requestId = globalData.request_id;
-        const linkContext = `/overplus/com.sap.gateway.srvd.zr_wm318_counting.v0001.preload_data(...)`;
-        const oAction = oModel.bindContext(linkContext, null);
+    // function preloadData(oView) {
+    //   return new Promise((resolve, reject) => {
+    //     const oModel = oView.getModel();
+    //     const requestId = globalData.request_id;
+    //     const linkContext = `/overplus/com.sap.gateway.srvd.zr_wm318_counting.v0001.preload_data(...)`;
+    //     const oAction = oModel.bindContext(linkContext, null);
 
-        const params = { request_id: requestId || "" };
-        setActionParameters(oAction, params);
-        oAction
-          .execute()
-          .then(() => {
-            const oResult = oAction.getBoundContext().getObject();
-            globalData.plant = oResult.plant;
-            globalData.base_unit_of_measure = oResult.base_unit_of_measure;
+    //     const params = { request_id: requestId || "" };
+    //     setActionParameters(oAction, params);
+    //     oAction
+    //       .execute()
+    //       .then(() => {
+    //         const oResult = oAction.getBoundContext().getObject();
 
-            // Material input logic
-            const itennrInput = oView.byId("idItennrInput");
-            if (oResult.request_type === "A" || oResult.cycle_wise === "L") {
-              itennrInput.setValue("");
-              itennrInput.setEditable(true);
-            } else {
-              itennrInput.setValue(oResult.itennr);
-              itennrInput.setEditable(false);
-            }
+    //         console.log("preload old", oResult);
+    //         globalData.plant = oResult.plant;
+    //         globalData.base_unit_of_measure = oResult.base_unit_of_measure;
 
-            oView.byId("idBatchInput").setEditable(oResult.batch_needed);
+    //         // Material input logic
+    //         const itennrInput = oView.byId("idItennrInput");
+    //         if (oResult.request_type === "A" || oResult.cycle_wise === "L") {
+    //           itennrInput.setValue("");
+    //           itennrInput.setEditable(true);
+    //         } else {
+    //           itennrInput.setValue(oResult.itennr);
+    //           itennrInput.setEditable(false);
+    //         }
 
-            setInputValues(oView, {
-              idLocationInput: oResult.location,
-              idItennrInput: oResult.itennr,
-              idHandingUnitInput: oResult.handing_unit,
-              idCountedQuantityInput: oResult.counted_quantity,
-              idBatchInput: oResult.batch,
-              idStockCategoryInput: oResult.stock_category,
-              idSpecialStockIndicatorInput: oResult.special_stock_ind,
-              idSpecialStockNumberInput: oResult.special_stock_num,
-              idSAPQuantityInput: oResult.sap_quantity,
-              idStorageTypeInput: oResult.storage_type,
-              idDescriptionInput: oResult.description,
-              idMaterialTypeInput: oResult.material_type,
-              idStandardCostInput: oResult.standard_cost,
-              idDesignGroupInput: oResult.design_group,
-            });
+    //         oView.byId("idBatchInput").setEditable(oResult.batch_needed);
 
-            oView
-              .byId("idStockCategoryInput")
-              .setEditable(!oResult.stock_category_needed);
+    //         setInputValues(oView, {
+    //           idLocationInput: oResult.location,
+    //           idItennrInput: oResult.itennr,
+    //           idHandingUnitInput: oResult.handing_unit,
+    //           idCountedQuantityInput: oResult.counted_quantity,
+    //           idBatchInput: oResult.batch,
+    //           idStockCategoryInput: oResult.stock_category,
+    //           idSpecialStockIndicatorInput: oResult.special_stock_ind,
+    //           idSpecialStockNumberInput: oResult.special_stock_num,
+    //           idSAPQuantityInput: oResult.sap_quantity,
+    //           idStorageTypeInput: oResult.storage_type,
+    //           idDescriptionInput: oResult.description,
+    //           idMaterialTypeInput: oResult.material_type,
+    //           idStandardCostInput: oResult.standard_cost,
+    //           idDesignGroupInput: oResult.design_group,
+    //         });
 
-            updateSAPQuantity(oView);
-            updateGRNDate(oView);
-            filterProblemByPlant(oView, globalData.plant);
+    //         oView
+    //           .byId("idStockCategoryInput")
+    //           .setEditable(!oResult.stock_category_needed);
 
-            resolve(oResult);
-          })
-          .catch((err) => {
-            console.error("Action failed:", err);
-            reject(err);
-          });
-      });
-    }
+    //         updateSAPQuantity(oView);
+    //         updateGRNDate(oView);
+    //         filterProblemByPlant(oView, globalData.plant);
+
+    //         resolve(oResult);
+    //       })
+    //       .catch((err) => {
+    //         console.error("Action failed:", err);
+    //         reject(err);
+    //       });
+    //   });
+    // }
 
     // --- SAP GRN Date Update ---
     function updateGRNDate(oView) {
@@ -260,7 +259,9 @@ sap.ui.define(
       },
 
       onAfterRendering: async function () {
-        await preloadData(this.getView());
+        globalData.request_id = getRequestId();
+        // await preloadData(this.getView());
+        await this._preloadDataCountingOverplus(globalData.request_id);
 
         this._checkBatchNeeded();
 
@@ -389,7 +390,69 @@ sap.ui.define(
         // If not exists = direct access
         return !bHasRequestId;
       },
-      
+
+      _preloadDataCountingOverplus: function (sRequestId) {
+        if (!sRequestId) return;
+
+        const oView = this.getView();
+        const oModel = oView.getModel();
+        const aFilters = [
+          new Filter("request_id", FilterOperator.EQ, sRequestId.trim()),
+        ];
+
+        oModel
+          .bindList("/overplus", undefined, undefined, aFilters)
+          .requestContexts(0, 1)
+          .then((aContexts) => {
+            const oResult = aContexts[0].getObject();
+
+            console.log("preload new", oResult);
+
+            // Sync globalData
+            globalData.plant = oResult.plant;
+            globalData.base_unit_of_measure = oResult.base_unit_of_measure;
+
+            // Material input logic
+            const itennrInput = oView.byId("idItennrInput");
+            if (oResult.request_type === "A" || oResult.cycle_wise === "L") {
+              itennrInput.setValue("");
+              itennrInput.setEditable(true);
+            } else {
+              itennrInput.setValue(oResult.itennr);
+              itennrInput.setEditable(false);
+            }
+
+            oView.byId("idBatchInput").setEditable(oResult.batch_needed);
+
+            setInputValues(oView, {
+              idLocationInput: oResult.location,
+              idItennrInput: oResult.itennr,
+              idHandingUnitInput: oResult.handing_unit,
+              idCountedQuantityInput: oResult.counted_quantity,
+              idBatchInput: oResult.batch,
+              idStockCategoryInput: oResult.stock_category,
+              idSpecialStockIndicatorInput: oResult.special_stock_ind,
+              idSpecialStockNumberInput: oResult.special_stock_num,
+              idSAPQuantityInput: oResult.sap_quantity,
+              idStorageTypeInput: oResult.storage_type,
+              idDescriptionInput: oResult.description,
+              idMaterialTypeInput: oResult.material_type,
+              idStandardCostInput: oResult.standard_cost,
+              idDesignGroupInput: oResult.design_group,
+            });
+
+            oView
+              .byId("idStockCategoryInput")
+              .setEditable(!oResult.stock_category_needed);
+
+            updateSAPQuantity(oView);
+            updateGRNDate(oView);
+            filterProblemByPlant(oView, globalData.plant);
+          })
+          .catch((oErr) =>
+            console.error("Load Counting Overplus failed:", oErr),
+          );
+      },
     });
   },
 );
