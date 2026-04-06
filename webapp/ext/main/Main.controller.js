@@ -261,11 +261,14 @@ sap.ui.define(
       onAfterRendering: async function () {
         globalData.request_id = getRequestId();
         // await preloadData(this.getView());
-        await this._preloadDataCountingOverplus(globalData.request_id);
+        await this._preloadDataCountingOverplus(globalData.request_id || "");
 
-        this._checkBatchNeeded();
+        if (globalData.request_id) {
+          await this._checkBatchNeeded();
+        }
 
-        const bIsDirectAccess = this._isDirectAccess();
+        const bIsDirectAccess = await this._isDirectAccess();
+
         if (bIsDirectAccess) {
           this.getView().byId("idItennrInput").setEditable(true);
         }
@@ -370,7 +373,7 @@ sap.ui.define(
           plant: globalData.plant,
           part_type: "",
         });
-        oAction
+        return oAction
           .execute()
           .then(() => {
             const oResult = oAction.getBoundContext().getObject();
@@ -392,15 +395,13 @@ sap.ui.define(
       },
 
       _preloadDataCountingOverplus: function (sRequestId) {
-        if (!sRequestId) return;
-
         const oView = this.getView();
         const oModel = oView.getModel();
         const aFilters = [
           new Filter("request_id", FilterOperator.EQ, sRequestId.trim()),
         ];
 
-        oModel
+        return oModel
           .bindList("/overplus", undefined, undefined, aFilters)
           .requestContexts(0, 1)
           .then((aContexts) => {
